@@ -72,6 +72,255 @@
             font-weight: 500;
             color: #ffc5d0;
         }
+        @keyframes riseUp {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(-100px);
+        }
+        }
+
+        @keyframes scaleY {
+        0%, 100% {
+            transform: scaleY(0.2);
+            opacity: 0;
+        }
+        50% {
+            transform: scaleY(1);
+            opacity: 1;
+        }
+        }
+
+        @keyframes show-1 {
+        0% {
+            opacity: 0;
+            transform: scale(0.2) translateY(0);
+        }
+        33% {
+            opacity: 0;
+            transform: scale(0.2) translateY(0);
+        }
+        66% {
+            opacity: 1;
+            transform: scale(0.6) translateY(-5rem);
+        }
+        100%  {
+            opacity: 0;
+            transform: scale(1) translateY(-10rem);
+        }
+        }
+        @keyframes show-2 {
+        0%{
+            opacity: 0;
+            transform: rotate(45deg) scale(0.2) translateY(0);
+        }
+        33% {
+            opacity: 0;
+            transform: rotate(45deg) scale(0.2) translateY(0);
+        }
+        66% {
+            opacity: 1;
+            transform: rotate(45deg) scale(0.6) translateY(-5rem);
+        }
+        100% {
+            opacity: 0;
+            transform: rotate(45deg) scale(1) translateY(-10rem);
+        }
+        }
+        @keyframes show-3 {
+        0% {
+            opacity: 0;
+            transform: rotate(90deg) scale(0.2) translateY(0);
+        }
+        33% {
+            opacity: 0;
+            transform: rotate(90deg) scale(0.2) translateY(0);
+        }
+        66% {
+            opacity: 1;
+            transform: rotate(90deg) scale(0.6) translateY(-5rem);
+        }
+        100% {
+            opacity: 0;
+            transform: rotate(90deg) scale(1) translateY(-10rem);
+        }
+        }
+        @keyframes show-4 {
+        0% {
+            opacity: 0;
+            transform: rotate(135deg) scale(0.2) translateY(0);
+        }
+        33% {
+            opacity: 0;
+            transform: rotate(135deg) scale(0.2) translateY(0);
+        }
+        66% {
+            opacity: 1;
+            transform: rotate(135deg) scale(0.6) translateY(-5rem);
+        }
+        100% {
+            opacity: 0;
+            transform: rotate(135deg) scale(1) translateY(-10rem);
+        }
+        }
+        @keyframes show-5 {
+        0% {
+            opacity: 0;
+            transform: rotate(180deg) scale(0.2) translateY(0);
+        }
+        33% {
+            opacity: 0;
+            transform: rotate(180deg) scale(0.2) translateY(0);
+        }
+        66% {
+            opacity: 1;
+            transform: rotate(180deg) scale(0.6) translateY(-5rem);
+        }
+        100% {
+            opacity: 0;
+            transform: rotate(180deg) scale(1) translateY(-10rem);
+        }
+        }
+        @keyframes show-6 {
+        0% {
+            opacity: 0;
+            transform: rotate(225deg) scale(0.2) translateY(0);
+        }
+        33% {
+            opacity: 0;
+            transform: rotate(225deg) scale(0.2) translateY(0);
+        }
+        66% {
+            opacity: 1;
+            transform: rotate(225deg) scale(0.6) translateY(-5rem);
+        }
+        100% {
+            opacity: 0;
+            transform: rotate(225deg) scale(1) translateY(-10rem);
+        }
+        }
+        @keyframes show-7 {
+        0% {
+            opacity: 0;
+            transform: rotate(270deg) scale(0.2) translateY(0);
+        }
+        33% {
+            opacity: 0;
+            transform: rotate(270deg) scale(0.2) translateY(0);
+        }
+        66% {
+            opacity: 1;
+            transform: rotate(270deg) scale(0.6) translateY(-5rem);
+        }
+        100% {
+            opacity: 0;
+            transform: rotate(270deg) scale(1) translateY(-10rem);
+        }
+        }
+        @keyframes show-8 {
+        0% {
+            opacity: 0;
+            transform: rotate(315deg) scale(0.2) translateY(0);
+        }
+        33% {
+            opacity: 0;
+            transform: rotate(315deg) scale(0.2) translateY(0);
+        }
+        66% {
+            opacity: 1;
+            transform: rotate(315deg) scale(0.6) translateY(-5rem);
+        }
+        100% {
+            opacity: 0;
+            transform: rotate(315deg) scale(1) translateY(-10rem);
+        }
+        }
+
+        .fire-work {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            animation: riseUp ease-out 1s forwards;
+        }
+
+        .fire-work_bar {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.25rem;
+            width: 0.05rem;
+            height: 2rem;
+            background-color: #ffc5d0;
+            transform-origin: bottom;
+            animation: scaleY linear 1s forwards;
+        }
+
+        .fire-work_flower-petal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-radius: 0.12rem;
+            border-width: 0.24rem 0.12rem;
+            border-style: solid;
+            border-color: #ffc5d0 transparent transparent transparent;
+        }
+        .color-1 {
+            border-color: #ffc5d0 !important;
+        }
+        .color-2 {
+            border-color: #e3a1ff !important;
+        }
+        .color-3 {
+            border-color: #b7ceff !important;
+        }
+        .color-4 {
+            border-color: #befeff !important;
+        }
+        .color-5 {
+            border-color: #d2ffdf !important;
+        }
+        .color-6 {
+            border-color: #faffd2 !important;
+        }
+        .color-7 {
+            border-color: #ffecaa !important;
+        }
+        .color-8 {
+            border-color: #ffb6aa !important;
+        }
+        .fire-work_flower-petal-1 {
+        animation: show-1 linear 3s forwards;
+        }
+        .fire-work_flower-petal-2 {
+        transform: rotate(45deg);
+        animation: show-2 linear 3s forwards; 
+        }
+        .fire-work_flower-petal-3 {
+        transform: rotate(90deg);
+        animation: show-3 linear 3s forwards;
+        }
+        .fire-work_flower-petal-4 {
+        transform: rotate(135deg);
+        animation: show-4 linear 3s forwards;
+        }
+        .fire-work_flower-petal-5 {
+        transform: rotate(180deg);
+        animation: show-5 linear 3s forwards;
+        }
+        .fire-work_flower-petal-6 {
+        transform: rotate(225deg);
+        animation: show-6 linear 3s forwards; 
+        }
+        .fire-work_flower-petal-7 {
+        transform: rotate(270deg);
+        animation: show-7 linear 3s forwards;
+        }
+        .fire-work_flower-petal-8 {
+        transform: rotate(315deg);
+        animation: show-8 linear 3s forwards;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +335,9 @@
                 <span class="second" id="second"></span>秒)
             </p>
         </div>
+        <div id="fire-work-container">
+
+        </div>
     </div>
     <script>
         const togatherTime = new Date('2021/09/15 12:40:00');
@@ -93,6 +345,7 @@
         const hour = document.getElementById('hour');
         const minute = document.getElementById('minute');
         const second = document.getElementById('second');
+        const fireWorkContainer = document.getElementById('fire-work-container');
         const DAY = (24*3600*1000),
               HOUR = 3600 * 1000,
               MINUTE = 60 * 1000,
@@ -111,13 +364,55 @@
         }
 
         const screenWidth = document.documentElement.clientWidth;
+        const screenHeight = document.documentElement.clientHeight;
+        const x = Math.floor(screenWidth / 14);
+        const y = Math.floor(screenHeight / 14);
         const ratio = screenWidth / 750;
         const fontSize = ratio * 14;
         document.documentElement.fontSize = `${fontSize}px`;
 
+        const getFireWork = (top, left, isMultiple, cls) => `
+        <div class="fire-work" style="top: ${top}rem; left: ${left}rem">
+          <div class="fire-work_flower">
+            <div class="fire-work_flower-petal fire-work_flower-petal-1 ${isMultiple ? 'color-1' : cls}"></div>
+            <div class="fire-work_flower-petal fire-work_flower-petal-2 ${isMultiple ? 'color-2' : cls}"></div>
+            <div class="fire-work_flower-petal fire-work_flower-petal-3 ${isMultiple ? 'color-3' : cls}"></div>
+            <div class="fire-work_flower-petal fire-work_flower-petal-4 ${isMultiple ? 'color-4' : cls}"></div>
+            <div class="fire-work_flower-petal fire-work_flower-petal-5 ${isMultiple ? 'color-5' : cls}"></div>
+            <div class="fire-work_flower-petal fire-work_flower-petal-6 ${isMultiple ? 'color-6' : cls}"></div>
+            <div class="fire-work_flower-petal fire-work_flower-petal-7 ${isMultiple ? 'color-7' : cls}"></div>
+            <div class="fire-work_flower-petal fire-work_flower-petal-8 ${isMultiple ? 'color-8' : cls}"></div>
+          </div>
+          <div class="fire-work_bar"></div>
+        </div>
+        `;
+
+        function addfireWork(isMultiple) {
+          
+          const top = Math.random() * (x - 4) + 4;
+          const left = Math.random() * (y - 2) + 2;
+          const styleNum = Math.floor(Math.random() * 8 + 1);
+          fireWorkContainer.innerHTML += getFireWork(top, left, isMultiple, `color-${styleNum}`);
+        }
+
+        function addManyFirework(n) {
+            let i = 1;
+            addfireWork(true);
+            while(i < n) {
+                addfireWork();
+                i++;
+            }
+        }
+
+        addManyFirework(52);
+        setInterval(() => {
+            fireWorkContainer.innerHTML = ''
+            addManyFirework(20);
+        }, 3000);
+
         getDays();
         setInterval(() => {
-            getDays();
+          getDays();
         }, 1000)
     </script>
 </body>
