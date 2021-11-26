@@ -1,419 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我们的纪念</title>
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-        html {
-            font-size: 14px;
-        }
-        .container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-        .masking {
-            position: absolute;
-            top: 6.64rem;
-            left: 0;
-            width: 100%;
-            height: 10.2rem;
-            text-align: center;
-            color: #fff;
-            font-size: 1.6rem;
-            line-height: 1.4;
-            background: linear-gradient(to right, rgba(0, 20, 56, 0) 5%, rgba(0, 20, 56, 0.2) 70%, rgba(0, 20, 56, 0));
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            letter-spacing: 0.15rem;
-        }
-        @keyframes blink {
-            0%, 20%, 40%, 60%, 80%, 100% {
-                opacity: 1;
-            }
-            10%, 30%, 50%, 70%, 90% {
-                opacity: 0.5;
-            }
-        }
-        @keyframes bounce {
-            0%, 20%, 40%, 60%, 80%, 100% {
-                transform: translateY(0);
-            }
-            10%, 30%, 50%, 70%, 90% {
-                transform: translateY(-5px);
-            }
-        }
-        .masking .day {
-            color: #ffc5d0;
-            font-weight: 500;
-            animation: blink 5s infinite;
-        }
-        .masking .min {
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #f8f8f8;
-        }
-        .masking .second {
-            animation: bounce 5s infinite;
-        }
-        .hour, .minute, .second {
-            font-weight: 500;
-            color: #ffc5d0;
-        }
-        @keyframes riseUp {
-        0% {
-            transform: translateY(0);
-        }
-        100% {
-            transform: translateY(-100px);
-        }
-        }
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
 
-        @keyframes scaleY {
-        0%, 100% {
-            transform: scaleY(0.2);
-            opacity: 0;
-        }
-        50% {
-            transform: scaleY(1);
-            opacity: 1;
-        }
-        }
+    html {
+      font-size: 14px;
+    }
 
-        @keyframes show-1 {
-        0% {
-            opacity: 0;
-            transform: scale(0.2) translateY(0);
-        }
-        33% {
-            opacity: 0;
-            transform: scale(0.2) translateY(0);
-        }
-        66% {
-            opacity: 1;
-            transform: scale(0.6) translateY(-5rem);
-        }
-        100%  {
-            opacity: 0;
-            transform: scale(1) translateY(-10rem);
-        }
-        }
-        @keyframes show-2 {
-        0%{
-            opacity: 0;
-            transform: rotate(45deg) scale(0.2) translateY(0);
-        }
-        33% {
-            opacity: 0;
-            transform: rotate(45deg) scale(0.2) translateY(0);
-        }
-        66% {
-            opacity: 1;
-            transform: rotate(45deg) scale(0.6) translateY(-5rem);
-        }
-        100% {
-            opacity: 0;
-            transform: rotate(45deg) scale(1) translateY(-10rem);
-        }
-        }
-        @keyframes show-3 {
-        0% {
-            opacity: 0;
-            transform: rotate(90deg) scale(0.2) translateY(0);
-        }
-        33% {
-            opacity: 0;
-            transform: rotate(90deg) scale(0.2) translateY(0);
-        }
-        66% {
-            opacity: 1;
-            transform: rotate(90deg) scale(0.6) translateY(-5rem);
-        }
-        100% {
-            opacity: 0;
-            transform: rotate(90deg) scale(1) translateY(-10rem);
-        }
-        }
-        @keyframes show-4 {
-        0% {
-            opacity: 0;
-            transform: rotate(135deg) scale(0.2) translateY(0);
-        }
-        33% {
-            opacity: 0;
-            transform: rotate(135deg) scale(0.2) translateY(0);
-        }
-        66% {
-            opacity: 1;
-            transform: rotate(135deg) scale(0.6) translateY(-5rem);
-        }
-        100% {
-            opacity: 0;
-            transform: rotate(135deg) scale(1) translateY(-10rem);
-        }
-        }
-        @keyframes show-5 {
-        0% {
-            opacity: 0;
-            transform: rotate(180deg) scale(0.2) translateY(0);
-        }
-        33% {
-            opacity: 0;
-            transform: rotate(180deg) scale(0.2) translateY(0);
-        }
-        66% {
-            opacity: 1;
-            transform: rotate(180deg) scale(0.6) translateY(-5rem);
-        }
-        100% {
-            opacity: 0;
-            transform: rotate(180deg) scale(1) translateY(-10rem);
-        }
-        }
-        @keyframes show-6 {
-        0% {
-            opacity: 0;
-            transform: rotate(225deg) scale(0.2) translateY(0);
-        }
-        33% {
-            opacity: 0;
-            transform: rotate(225deg) scale(0.2) translateY(0);
-        }
-        66% {
-            opacity: 1;
-            transform: rotate(225deg) scale(0.6) translateY(-5rem);
-        }
-        100% {
-            opacity: 0;
-            transform: rotate(225deg) scale(1) translateY(-10rem);
-        }
-        }
-        @keyframes show-7 {
-        0% {
-            opacity: 0;
-            transform: rotate(270deg) scale(0.2) translateY(0);
-        }
-        33% {
-            opacity: 0;
-            transform: rotate(270deg) scale(0.2) translateY(0);
-        }
-        66% {
-            opacity: 1;
-            transform: rotate(270deg) scale(0.6) translateY(-5rem);
-        }
-        100% {
-            opacity: 0;
-            transform: rotate(270deg) scale(1) translateY(-10rem);
-        }
-        }
-        @keyframes show-8 {
-        0% {
-            opacity: 0;
-            transform: rotate(315deg) scale(0.2) translateY(0);
-        }
-        33% {
-            opacity: 0;
-            transform: rotate(315deg) scale(0.2) translateY(0);
-        }
-        66% {
-            opacity: 1;
-            transform: rotate(315deg) scale(0.6) translateY(-5rem);
-        }
-        100% {
-            opacity: 0;
-            transform: rotate(315deg) scale(1) translateY(-10rem);
-        }
-        }
+    :root {
+      --half_y: -0.8rem;
+      --y: -1.6rem;
+    }
 
-        .fire-work {
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            animation: riseUp ease-out 1s forwards;
-        }
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: all 0.5s;
+    }
 
-        .fire-work_bar {
-            position: absolute;
-            top: 0.5rem;
-            left: 0.25rem;
-            width: 0.05rem;
-            height: 2rem;
-            background-color: #ffc5d0;
-            transform-origin: bottom;
-            animation: scaleY linear 1s forwards;
-        }
+    .masking {
+      position: absolute;
+      top: 6.64rem;
+      left: 0;
+      width: 100%;
+      height: 10.2rem;
+      text-align: center;
+      color: #fff;
+      font-size: 1.6rem;
+      line-height: 1.4;
+      background: linear-gradient(to right, rgba(0, 20, 56, 0) 5%, rgba(0, 20, 56, 0.2) 70%, rgba(0, 20, 56, 0));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      letter-spacing: 0.15rem;
+    }
 
-        .fire-work_flower-petal {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-radius: 0.12rem;
-            border-width: 0.24rem 0.12rem;
-            border-style: solid;
-            border-color: #ffc5d0 transparent transparent transparent;
-        }
-        .color-1 {
-            border-color: #ffc5d0 !important;
-        }
-        .color-2 {
-            border-color: #e3a1ff !important;
-        }
-        .color-3 {
-            border-color: #b7ceff !important;
-        }
-        .color-4 {
-            border-color: #befeff !important;
-        }
-        .color-5 {
-            border-color: #d2ffdf !important;
-        }
-        .color-6 {
-            border-color: #faffd2 !important;
-        }
-        .color-7 {
-            border-color: #ffecaa !important;
-        }
-        .color-8 {
-            border-color: #ffb6aa !important;
-        }
-        .fire-work_flower-petal-1 {
-        animation: show-1 linear 3s forwards;
-        }
-        .fire-work_flower-petal-2 {
-        transform: rotate(45deg);
-        animation: show-2 linear 3s forwards; 
-        }
-        .fire-work_flower-petal-3 {
-        transform: rotate(90deg);
-        animation: show-3 linear 3s forwards;
-        }
-        .fire-work_flower-petal-4 {
-        transform: rotate(135deg);
-        animation: show-4 linear 3s forwards;
-        }
-        .fire-work_flower-petal-5 {
-        transform: rotate(180deg);
-        animation: show-5 linear 3s forwards;
-        }
-        .fire-work_flower-petal-6 {
-        transform: rotate(225deg);
-        animation: show-6 linear 3s forwards; 
-        }
-        .fire-work_flower-petal-7 {
-        transform: rotate(270deg);
-        animation: show-7 linear 3s forwards;
-        }
-        .fire-work_flower-petal-8 {
-        transform: rotate(315deg);
-        animation: show-8 linear 3s forwards;
-        }
-    </style>
+    @keyframes blink {
+
+      0%,
+      20%,
+      40%,
+      60%,
+      80%,
+      100% {
+        opacity: 1;
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        opacity: 0.5;
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      40%,
+      60%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .masking .day {
+      color: #ffc5d0;
+      font-weight: 500;
+      animation: blink 5s infinite;
+    }
+
+    .masking .min {
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f8f8f8;
+    }
+
+    .masking .second {
+      animation: bounce 5s infinite;
+    }
+
+    .hour,
+    .minute,
+    .second {
+      font-weight: 500;
+      color: #ffc5d0;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container" style="background-image: url(https://810307015.github.io/memory.png);">
-        <div class="masking" >
-            <p>相爱<span class="day" id="day"></span>天</p>
-            <p>愿余生都可四目相对</p>
-            <p>余生只有彼此</p>
-            <p class="min">
-                (<span class="hour" id="hour"></span>小时
-                <span class="minute" id="minute"></span>分钟
-                <span class="second" id="second"></span>秒)
-            </p>
-        </div>
-        <div id="fire-work-container">
-
-        </div>
+  <div id="container" class="container" style="background-image: url(https://810307015.github.io/image/banner0.jpeg);">
+    <div class="masking">
+      <p>相爱<span class="day" id="day"></span>天</p>
+      <p>愿余生都可四目相对</p>
+      <p>余生只有彼此</p>
+      <p class="min">
+        (<span class="hour" id="hour"></span>小时
+        <span class="minute" id="minute"></span>分钟
+        <span class="second" id="second"></span>秒)
+      </p>
     </div>
-    <script>
-        const togatherTime = new Date('2021/09/15 12:40:00');
-        const day = document.getElementById('day');
-        const hour = document.getElementById('hour');
-        const minute = document.getElementById('minute');
-        const second = document.getElementById('second');
-        const fireWorkContainer = document.getElementById('fire-work-container');
-        const DAY = (24*3600*1000),
-              HOUR = 3600 * 1000,
-              MINUTE = 60 * 1000,
-              SECOND = 1000;
-        function getDays() {
-            const delta = +new Date() - togatherTime;
-            const days = Math.floor(delta / DAY);
-            const hours = Math.floor(delta % DAY / HOUR);
-            const minutes = Math.floor(delta % HOUR / MINUTE);
-            const seconds = Math.floor((delta - days * DAY - hours * HOUR - minutes * MINUTE) / 1000);
+    <div id="fire-work-container">
 
-            day.innerText = days;
-            hour.innerText = hours.toString().padStart(2, '0');
-            minute.innerText = minutes.toString().padStart(2, '0');
-            second.innerText = seconds.toString().padStart(2, '0');
-        }
+    </div>
+    <canvas id="canvas"></canvas>
+  </div>
+  <script>
+    const bannerList = [
+      'https://810307015.github.io/image/banner0.jpeg',
+      'https://810307015.github.io/image/banner1.jpeg',
+      'https://810307015.github.io/image/banner2.jpeg',
+      'https://810307015.github.io/image/banner3.jpeg',
+      'https://810307015.github.io/image/banner4.jpeg',
+      'https://810307015.github.io/image/banner5.jpeg',
+      'https://810307015.github.io/image/banner6.jpeg',
+      'https://810307015.github.io/image/banner7.jpeg',
+      'https://810307015.github.io/image/banner8.jpeg',
+      'https://810307015.github.io/image/banner9.jpeg',
+      'https://810307015.github.io/image/banner10.jpeg',
+      'https://810307015.github.io/image/banner11.jpeg',
+      'https://810307015.github.io/image/banner12.jpeg',
+      'https://810307015.github.io/image/banner13.jpeg',
+      'https://810307015.github.io/image/banner14.jpeg',
+      'https://810307015.github.io/image/banner15.jpeg',
+      'https://810307015.github.io/image/banner17.jpeg',
+    ];
 
-        const screenWidth = document.documentElement.clientWidth;
-        const screenHeight = document.documentElement.clientHeight;
-        const x = Math.floor(screenWidth / 14);
-        const y = Math.floor(screenHeight / 14);
-        const ratio = screenWidth / 750;
-        const fontSize = ratio * 14;
-        document.documentElement.fontSize = `${fontSize}px`;
+    // function preload() {
+    //   const image = new Image();
+    //   let i = 0;
+    //   image.src = bannerList[i];
+    //   image.onload = function() {
+    //     if(i < bannerList.length) {
+    //       ++i;
+    //       image.src = bannerList[i];
+    //     }
+    //   }
+    // }
 
-        const getFireWork = (top, left, isMultiple, cls) => `
-        <div class="fire-work" style="top: ${top}rem; left: ${left}rem">
-          <div class="fire-work_flower">
-            <div class="fire-work_flower-petal fire-work_flower-petal-1 ${isMultiple ? 'color-1' : cls}"></div>
-            <div class="fire-work_flower-petal fire-work_flower-petal-2 ${isMultiple ? 'color-2' : cls}"></div>
-            <div class="fire-work_flower-petal fire-work_flower-petal-3 ${isMultiple ? 'color-3' : cls}"></div>
-            <div class="fire-work_flower-petal fire-work_flower-petal-4 ${isMultiple ? 'color-4' : cls}"></div>
-            <div class="fire-work_flower-petal fire-work_flower-petal-5 ${isMultiple ? 'color-5' : cls}"></div>
-            <div class="fire-work_flower-petal fire-work_flower-petal-6 ${isMultiple ? 'color-6' : cls}"></div>
-            <div class="fire-work_flower-petal fire-work_flower-petal-7 ${isMultiple ? 'color-7' : cls}"></div>
-            <div class="fire-work_flower-petal fire-work_flower-petal-8 ${isMultiple ? 'color-8' : cls}"></div>
-          </div>
-          <div class="fire-work_bar"></div>
-        </div>
-        `;
+    // preload();
 
-        function addfireWork(isMultiple) {
-          
-          const top = Math.random() * (x - 4) + 4;
-          const left = Math.random() * (y - 2) + 2;
-          const styleNum = Math.floor(Math.random() * 8 + 1);
-          fireWorkContainer.innerHTML += getFireWork(top, left, isMultiple, `color-${styleNum}`);
-        }
+    const canvas = document.getElementById('canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+    const COLOR_LIST = ['#ffc5d0', '#e3a1ff', '#b7ceff', '#befeff', '#d2ffdf', '#faffd2', '#ffecaa', '#ffb6aa'];
+    const container = document.getElementById('container');
 
-        function addManyFirework(n) {
-            let i = 1;
-            addfireWork(true);
-            while(i < n) {
-                addfireWork();
-                i++;
-            }
-        }
+    const togatherTime = new Date('2021/09/15 12:40:00');
+    const day = document.getElementById('day');
+    const hour = document.getElementById('hour');
+    const minute = document.getElementById('minute');
+    const second = document.getElementById('second');
+    const fireWorkContainer = document.getElementById('fire-work-container');
+    const DAY = (24 * 3600 * 1000),
+      HOUR = 3600 * 1000,
+      MINUTE = 60 * 1000,
+      SECOND = 1000;
+    function getDays() {
+      const delta = +new Date() - togatherTime;
+      const days = Math.floor(delta / DAY);
+      const hours = Math.floor(delta % DAY / HOUR);
+      const minutes = Math.floor(delta % HOUR / MINUTE);
+      const seconds = Math.floor((delta - days * DAY - hours * HOUR - minutes * MINUTE) / 1000);
 
-        addManyFirework(52);
-        setInterval(() => {
-            fireWorkContainer.innerHTML = ''
-            addManyFirework(20);
-        }, 3000);
+      day.innerText = days;
+      hour.innerText = hours.toString().padStart(2, '0');
+      minute.innerText = minutes.toString().padStart(2, '0');
+      second.innerText = seconds.toString().padStart(2, '0');
+    }
 
-        getDays();
-        setInterval(() => {
-          getDays();
-        }, 1000)
-    </script>
+    function drawCircle(x, y, radius, color) {
+      const c = color || COLOR_LIST[Math.floor(Math.random() * 7)];
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+      ctx.fillStyle = c;
+      ctx.fill();
+    }
+
+    function drawLine(x1, y1, x2, y2, color) {
+      const c = color || COLOR_LIST[Math.floor(Math.random() * 7)];
+      ctx.beginPath();
+      ctx.strokeStyle = c;
+      ctx.lineWidth = 1;
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+
+    function drawFirework(x, y, radius, margin, color) {
+      const delta = margin * 2;
+      drawLine(x - delta, y - delta, x - delta * 1.5, y - delta * 1.5, color);
+      drawLine(x, y - delta * 1, x, y - delta * 2, color);
+      drawLine(x + delta, y - delta, x + delta * 1.5, y - delta * 1.5, color);
+      drawLine(x - delta * 1, y, x - delta * 2, y, color);
+      drawCircle(x, y, radius, color);
+      drawLine(x + delta * 1, y, x + delta * 2, y, color);
+      drawLine(x - delta, y + delta, x - delta * 1.5, y + delta * 1.5, color);
+      drawLine(x, y + delta * 1, x, y + delta * 2, color);
+      drawLine(x + delta, y + delta, x + delta * 1.5, y + delta * 1.5, color);
+    }
+
+    function drawOne(x, y, margin, color) {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
+      drawFirework(x, y, 2, margin, color);
+      if (margin < 5) {
+        margin += 0.1;
+        window.requestAnimationFrame(() => {
+          drawOne(x, y, margin, color)
+        });
+      } else {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
+      }
+    }
+
+    function drawOneBar(x, y, margin, color) {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
+      drawLine(x, y - margin, x, y - margin * 2, color);
+      if (margin < 15) {
+        margin += 0.2;
+        window.requestAnimationFrame(() => {
+          drawOneBar(x, y, margin, color)
+        });
+      } else {
+        drawOne(x, y - margin * 2, 0, color);
+      }
+    }
+
+    function drawList(list, margin, callback) {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
+      for (let i = 0; i < list.length; i++) {
+        const point = list[i];
+        drawFirework(point.x, point.y, 2, margin, point.color);
+      }
+      if (margin < 5) {
+        margin += 0.1;
+        window.requestAnimationFrame(() => {
+          drawList(list, margin, callback)
+        });
+      } else {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
+        callback && callback();
+      }
+    }
+
+    function drawMultiBar(list, margin, callback) {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
+      for (let i = 0; i < list.length; i++) {
+        const point = list[i];
+        drawLine(point.x, point.y - margin, point.x, point.y - margin * 2, point.color);
+      }
+      if (margin < 15) {
+        margin += 0.2;
+        window.requestAnimationFrame(() => {
+          drawMultiBar(list, margin, callback)
+        });
+      } else {
+        drawList(list.map(item => ({ x: item.x, y: item.y - margin * 2, color: item.color })), 0, callback);
+      }
+    }
+
+    function generate(num = 11) {
+      let i = 0;
+      const points = [];
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      while (i < num) {
+        points.push({
+          x: Math.random() * width,
+          y: Math.random() * height / 3 * 2,
+          color: COLOR_LIST[Math.floor(Math.random() * 7)]
+        });
+        ++i;
+      }
+      drawMultiBar(points, 0, () => {
+        setTimeout(() => {
+          generate(Math.random() * 99);
+        }, 1000);
+      })
+    }
+
+    // drawOne(50, 50, 0);
+
+    canvas.addEventListener('click', function (e) {
+      const { x, y } = e;
+      drawOneBar(x, y, 0, COLOR_LIST[Math.floor(Math.random() * 7)]);
+      // drawOne(x, y, 0, COLOR_LIST[Math.floor(Math.random() * 7)]);
+    })
+
+
+    generate();
+
+    getDays();
+    let i = 0;
+    setInterval(() => {
+      getDays();
+      ++i;
+      if(i >= bannerList.length * 5) {
+        i = 0;
+      }
+      container.style.backgroundImage = `url(${bannerList[Math.floor(i / 5)]})`
+    }, 1000)
+  </script>
 </body>
+
 </html>
