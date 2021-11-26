@@ -162,19 +162,19 @@
       'https://810307015.github.io/image/banner17.jpeg',
     ];
 
-    // function preload() {
-    //   const image = new Image();
-    //   let i = 0;
-    //   image.src = bannerList[i];
-    //   image.onload = function() {
-    //     if(i < bannerList.length) {
-    //       ++i;
-    //       image.src = bannerList[i];
-    //     }
-    //   }
-    // }
+    function preload() {
+      const image = new Image();
+      let i = 0;
+      image.src = bannerList[i];
+      image.onload = function() {
+        if(i < bannerList.length) {
+          ++i;
+          image.src = bannerList[i];
+        }
+      }
+    }
 
-    // preload();
+    preload();
 
     const canvas = document.getElementById('canvas');
     canvas.width = window.innerWidth;
@@ -304,7 +304,7 @@
       while (i < num) {
         points.push({
           x: Math.random() * width,
-          y: Math.random() * height / 3 * 2,
+          y: Math.random() * height / 3,
           color: COLOR_LIST[Math.floor(Math.random() * 7)]
         });
         ++i;
