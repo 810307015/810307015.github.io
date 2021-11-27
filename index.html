@@ -25,10 +25,23 @@
       position: relative;
       width: 100vw;
       height: 100vh;
+    }
+
+    .banner {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      transition: all 0.5s;
+      transition: all 2s;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .banner.active {
+      z-index: 999;
+      opacity: 1;
     }
 
     .masking {
@@ -120,12 +133,30 @@
       left: 0;
       width: 100%;
       height: 100%;
+      z-index: 1000;
     }
   </style>
 </head>
 
 <body>
-  <div id="container" class="container" style="background-image: url(https://810307015.github.io/image/banner0.jpeg);">
+  <div class="container">
+    <div class="banner active" style="background-image: url(https://810307015.github.io/image/banner0.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner1.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner2.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner3.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner4.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner5.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner6.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner7.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner8.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner9.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner10.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner11.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner12.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner13.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner14.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner15.jpeg);"></div>
+    <div class="banner" style="background-image: url(https://810307015.github.io/image/banner17.jpeg);"></div>
     <div class="masking">
       <p>相爱<span class="day" id="day"></span>天</p>
       <p>愿余生都可四目相对</p>
@@ -136,59 +167,21 @@
         <span class="second" id="second"></span>秒)
       </p>
     </div>
-    <div id="fire-work-container">
-
-    </div>
     <canvas id="canvas"></canvas>
   </div>
+  
   <script>
-    const bannerList = [
-      'https://810307015.github.io/image/banner0.jpeg',
-      'https://810307015.github.io/image/banner1.jpeg',
-      'https://810307015.github.io/image/banner2.jpeg',
-      'https://810307015.github.io/image/banner3.jpeg',
-      'https://810307015.github.io/image/banner4.jpeg',
-      'https://810307015.github.io/image/banner5.jpeg',
-      'https://810307015.github.io/image/banner6.jpeg',
-      'https://810307015.github.io/image/banner7.jpeg',
-      'https://810307015.github.io/image/banner8.jpeg',
-      'https://810307015.github.io/image/banner9.jpeg',
-      'https://810307015.github.io/image/banner10.jpeg',
-      'https://810307015.github.io/image/banner11.jpeg',
-      'https://810307015.github.io/image/banner12.jpeg',
-      'https://810307015.github.io/image/banner13.jpeg',
-      'https://810307015.github.io/image/banner14.jpeg',
-      'https://810307015.github.io/image/banner15.jpeg',
-      'https://810307015.github.io/image/banner17.jpeg',
-    ];
-
-    function preload() {
-      const image = new Image();
-      let i = 0;
-      image.src = bannerList[i];
-      image.onload = function() {
-        if(i < bannerList.length) {
-          ++i;
-          image.src = bannerList[i];
-        }
-      }
-    }
-
-    preload();
-
     const canvas = document.getElementById('canvas');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const ctx = canvas.getContext('2d');
     const COLOR_LIST = ['#ffc5d0', '#e3a1ff', '#b7ceff', '#befeff', '#d2ffdf', '#faffd2', '#ffecaa', '#ffb6aa'];
-    const container = document.getElementById('container');
 
     const togatherTime = new Date('2021/09/15 12:40:00');
     const day = document.getElementById('day');
     const hour = document.getElementById('hour');
     const minute = document.getElementById('minute');
     const second = document.getElementById('second');
-    const fireWorkContainer = document.getElementById('fire-work-container');
     const DAY = (24 * 3600 * 1000),
       HOUR = 3600 * 1000,
       MINUTE = 60 * 1000,
@@ -237,6 +230,12 @@
       drawLine(x + delta, y + delta, x + delta * 1.5, y + delta * 1.5, color);
     }
 
+    let locking = {
+      auto: false, // 自动播放的动画
+      click: false, // 点击产生的动画
+      pending: [], // 当前等待的动画
+    }; // 是否有未完成的动画
+
     function drawOne(x, y, margin, color) {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
       drawFirework(x, y, 2, margin, color);
@@ -247,10 +246,19 @@
         });
       } else {
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
+        locking.click = false;
       }
     }
 
     function drawOneBar(x, y, margin, color) {
+      if(locking.auto) {
+        // 等待当前的auto动画结束再执行click动画
+        window.requestAnimationFrame(() => {
+          drawOneBar(x, y, margin, color)
+        });
+        return;
+      }
+      locking.click = true;
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
       drawLine(x, y - margin, x, y - margin * 2, color);
       if (margin < 15) {
@@ -276,11 +284,19 @@
         });
       } else {
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
+        locking.auto = false;
         callback && callback();
       }
     }
 
     function drawMultiBar(list, margin, callback) {
+      if(locking.click) {
+        window.requestAnimationFrame(() => {
+          drawMultiBar(list, margin, callback)
+        });
+        return;
+      }
+      locking.auto = true;
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // clear canvas
       for (let i = 0; i < list.length; i++) {
         const point = list[i];
@@ -329,13 +345,21 @@
 
     getDays();
     let i = 0;
+    const bannerList = Array.prototype.slice.apply(document.getElementsByClassName('banner'));
     setInterval(() => {
       getDays();
       ++i;
-      if(i >= bannerList.length * 5) {
+      if(i >= 85) {
         i = 0;
       }
-      container.style.backgroundImage = `url(${bannerList[Math.floor(i / 5)]})`
+      const current = Math.floor(i / 5);
+      bannerList.forEach((banner, index) => {
+        if(index === current) {
+          banner.className = 'banner active';
+        } else {
+          banner.className = 'banner';
+        }
+      })
     }, 1000)
   </script>
 </body>
