@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #container {
+      transform-style: preserve-3d;
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      transform-origin: center;
+      animation: rotate 10s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate3d(0, 0, 0, 0);
+      }
+
+      100% {
+        transform: rotate3d(0, 0.5, 1, 360deg); 
+      }
+    }
+
+    #container .item {
+      position: absolute;
+      top: calc(50% - 75px);
+      left: calc(50% - 125px);
+      transform-origin: center;
+      width: 150px;
+      height: 250px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+
+  <script>
+    const imageList = [
+      'https://810307015.github.io/image/banner1.jpeg',
+      'https://810307015.github.io/image/banner2.jpeg',
+      'https://810307015.github.io/image/banner3.jpeg',
+      'https://810307015.github.io/image/banner4.jpeg',
+      'https://810307015.github.io/image/banner5.jpeg',
+      'https://810307015.github.io/image/banner6.jpeg'
+    ];
+    const getRandom = () => {
+      return Math.floor(Math.random() * 256).toString(16);
+    }
+    const getXYZ = () => {
+      return [
+        [0, 0, -65],
+        [55, 0, 96],
+        [-55, 0, -160],
+        [0, 0, 190],
+        [55, 0, -160],
+        [-55, 0, 96],
+      ]
+    };
+    const colors = [
+      'red',
+      'orange',
+      'yellow',
+      'green',
+      'blue',
+      'cyan',
+    ];
+    const renderList = (list) => {
+      const len = list.length;
+      const angle = (len + 2) * 180 / len;
+      const fragment = document.createDocumentFragment();
+      const xyz = getXYZ();
+      list.forEach((item, index) => {
+        const dom = document.createElement('div');
+        const point = xyz[index];
+        dom.className = 'item';
+        dom.style.transform = `rotateY(${angle * index}deg) translate3d(${point[0]}px, ${point[1]}px, ${point[2]}px)`;
+        dom.style.background = `url(${item}) center / cover no-repeat`;
+        fragment.appendChild(dom);
+      });
+      document.getElementById('container').appendChild(fragment);
+    };
+
+    renderList(imageList);
+  </script>
+</body>
+</html>
