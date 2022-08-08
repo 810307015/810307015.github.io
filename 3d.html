@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    #container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: url(https://810307015.github.io/image/star-sky.jpeg) center / cover no-repeat;
+    }
+
+    .box {
+      position: relative;
+      width: 300px;
+      height: 500px;
+      transform-style: preserve-3d;
+      animation-name: rotate;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-duration: 20s;
+    }
+
+    .box .box-item {
+      position: absolute;
+      top: 0;
+      transform-origin: left;
+      transform-style: preserve-3d;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotateX(-15deg) rotateY(0);
+      }
+
+      100% {
+        transform: rotateX(-15deg) rotateY(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="box" class="box">
+      
+    </div>
+  </div>
+
+  <script>
+    const box = document.getElementById('box');
+
+    const list = [
+      'https://810307015.github.io/image/banner0.jpeg',
+      'https://810307015.github.io/image/banner1.jpeg',
+      'https://810307015.github.io/image/banner2.jpeg',
+      'https://810307015.github.io/image/banner3.jpeg',
+      'https://810307015.github.io/image/banner4.jpeg',
+      'https://810307015.github.io/image/banner5.jpeg',
+      'https://810307015.github.io/image/banner6.jpeg',
+      'https://810307015.github.io/image/banner7.jpeg',
+      'https://810307015.github.io/image/banner8.jpeg',
+      'https://810307015.github.io/image/banner9.jpeg',
+      'https://810307015.github.io/image/banner10.jpeg',
+      'https://810307015.github.io/image/banner11.jpeg',
+      'https://810307015.github.io/image/banner12.jpeg',
+      'https://810307015.github.io/image/banner13.jpeg',
+      'https://810307015.github.io/image/banner14.jpeg',
+      'https://810307015.github.io/image/banner15.jpeg',
+      'https://810307015.github.io/image/banner16.jpeg',
+      'https://810307015.github.io/image/banner17.jpeg',
+    ];
+
+    const getAngle = (n) => {
+      return ((n - 2) * 180) / n;
+    };
+
+    const getHeight = (n, width) => {
+      const rad = (90 - (360 / (2 * n))) * Math.PI / 180;
+      return Math.tan(rad) * (width / 2);
+    };
+
+    const renderList = (parent, angle, list, x, y) => {
+      if(list.length === 0) {
+        return;
+      };
+      const item = list.shift();
+      const dom = document.createElement('div');
+      dom.className = 'box-item';
+      dom.style.left = `${x}px`;
+      dom.style.width = `${x}px`;
+      dom.style.height = `${y}px`;
+      dom.style.backgroundImage = `url(${item})`;
+      dom.style.transform = `rotateY(-${(180 - angle)}deg)`;
+      parent.appendChild(dom);
+      renderList(dom, angle, list, x, y);
+    };
+
+    const renderPolygon = (list, x, y) => {
+      const fragment = document.createDocumentFragment();
+      const angle = getAngle(list.length);
+      const height = getHeight(list.length, x);
+      renderList(fragment, angle, list, x, y);
+      box.appendChild(fragment);
+      box.style.transformOrigin = `center center ${height}px`;
+    };
+
+    renderPolygon(list, 300, 500);
+  </script>
+</body>
+</html>
