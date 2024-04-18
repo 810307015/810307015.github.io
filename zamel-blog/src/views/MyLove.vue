@@ -3,6 +3,7 @@ import { recordList } from '@/config/index';
 const canvas = ref<HTMLCanvasElement | null>(null);
 const effectCanvas = ref<HTMLCanvasElement | null>(null);
 const ctx = ref<CanvasRenderingContext2D | null>(null);
+const loveList = ref<Array<{x: number; y: number;}>>([]);
 const index = ref<number>(0);
 const opacity = ref<number>(0);
 const day = ref<number>(0);
@@ -77,13 +78,19 @@ const drawImage = () => {
     }
 };
 
-const drawLove = () => {
+const resetLoveList = () => {
+    loveList.value = new Array(8).fill(0).map(item => ({
+        x: width / 2 - Math.random() * width,
+        y: height / 2 - Math.random() * height,
+    }));
+};
+
+const drawOneLove = (dx: number, dy: number) => {
     const ctx = effectCanvas.value.getContext("2d");
-    ctx.clearRect(0, 0, width, height);
     ctx.save();
     ctx.beginPath();
-    ctx.fillStyle = `rgba(254, 57, 21, ${opacity.value})`;
-    ctx.translate(width / 2, height / 2 - 200);
+    ctx.fillStyle = `rgba(247, 200, 207, ${opacity.value})`;
+    ctx.translate(width / 2 - dx, height / 2 - dy);
     ctx.scale(opacity.value, -1 * opacity.value);
     ctx.moveTo(0, 0);
     let angle = 0, x = 0, y = 0, a = 6;
@@ -96,11 +103,18 @@ const drawLove = () => {
     ctx.fill();
     ctx.closePath();
     ctx.restore();
+};
+
+const drawLove = () => {
+    const ctx = effectCanvas.value.getContext("2d");
+    ctx.clearRect(0, 0, width, height);
+    loveList.value.map(item => drawOneLove(item.x, item.y));
     setTimeout(() => {
-        if (opacity.value < 1) {
+        if (opacity.value < 0.8) {
             opacity.value += 0.1;
         } else {
             opacity.value = 0;
+            resetLoveList();
         }
         drawLove();
     }, 100);
@@ -124,6 +138,7 @@ onMounted(() => {
     if (effectCanvas.value) {
         effectCanvas.value.width = width;
         effectCanvas.value.height = height;
+        resetLoveList();
         drawLove();
     }
 });
