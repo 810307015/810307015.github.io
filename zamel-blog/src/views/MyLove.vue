@@ -59,6 +59,9 @@ const caculateImage = (w: number, h: number) => {
 }
 
 const drawImage = () => {
+    if (!canvas.value) {
+        return;
+    }
     if (recordList.length > 0) {
         const img = new Image();
         img.src = recordList[index.value];
@@ -86,6 +89,9 @@ const resetLoveList = () => {
 };
 
 const drawOneLove = (dx: number, dy: number) => {
+    if (!effectCanvas.value) {
+        return;
+    }
     const ctx = effectCanvas.value.getContext("2d");
     ctx.save();
     ctx.beginPath();
@@ -106,6 +112,9 @@ const drawOneLove = (dx: number, dy: number) => {
 };
 
 const drawLove = () => {
+    if (!effectCanvas.value) {
+        return;
+    }
     const ctx = effectCanvas.value.getContext("2d");
     ctx.clearRect(0, 0, width, height);
     loveList.value.map(item => drawOneLove(item.x, item.y));
