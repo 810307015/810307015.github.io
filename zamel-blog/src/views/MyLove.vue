@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { recordList } from '@/config/index';
 const canvas = ref<HTMLCanvasElement | null>(null);
+const effectCanvas = ref<HTMLCanvasElement | null>(null);
 const ctx = ref<CanvasRenderingContext2D | null>(null);
 const index = ref<number>(0);
+const opacity = ref<number>(0);
 const day = ref<number>(0);
 const hour = ref<string>('');
 const minute = ref<string>('');
@@ -75,6 +77,35 @@ const drawImage = () => {
     }
 };
 
+const drawLove = () => {
+    const ctx = effectCanvas.value.getContext("2d");
+    ctx.clearRect(0, 0, width, height);
+    ctx.save();
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(254, 57, 21, ${opacity.value})`;
+    ctx.translate(width / 2, height / 2 - 200);
+    ctx.scale(opacity.value, -1 * opacity.value);
+    ctx.moveTo(0, 0);
+    let angle = 0, x = 0, y = 0, a = 6;
+    for (let i = 0; i < 30; i += 0.2) {
+        angle = i / Math.PI;
+        x = a * (16 * Math.sin(angle) ** 3);
+        y = a * (13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle));
+        ctx.lineTo(x, y);
+    }
+    ctx.fill();
+    ctx.closePath();
+    ctx.restore();
+    setTimeout(() => {
+        if (opacity.value < 1) {
+            opacity.value += 0.1;
+        } else {
+            opacity.value = 0;
+        }
+        drawLove();
+    }, 100);
+};
+
 const drawText = () => {
     ctx.value.font = "30px Arial";
     ctx.value.fillStyle = "#fff";
@@ -89,12 +120,19 @@ onMounted(() => {
         drawImage();
         getDays();
     }
+
+    if (effectCanvas.value) {
+        effectCanvas.value.width = width;
+        effectCanvas.value.height = height;
+        drawLove();
+    }
 });
 </script>
 
 <template>
     <main class="container">
         <canvas ref="canvas">你的浏览器不支持canvas</canvas>
+        <canvas ref="effectCanvas" class="effect-canvas">你的浏览器不支持canvas</canvas>
         <div class="masking">
             <p>相爱<span class="day" id="day">{{ day }}</span>天</p>
             <p>愿余生都可四目相对</p>
@@ -156,6 +194,12 @@ onMounted(() => {
         width: 400px;
         height: 600px;
         margin: 0 auto;
+    }
+
+    .effect-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
     }
 
     .masking {
