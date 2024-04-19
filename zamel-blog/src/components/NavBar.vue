@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { RouterLink, useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import type { TabsPaneContext } from 'element-plus';
+import { ElTabs, ElTabPane } from 'element-plus';
 const menuConfig = [
     {
         label: '首页',
@@ -8,67 +10,41 @@ const menuConfig = [
     {
         label: '记录',
         path: '/record',
+    },
+    {
+        label: 'webassembly',
+        path: '/webassembly',
     }
 ];
+const tabPostion = ref<string>('left');
 const route = useRoute();
 const router = useRouter();
-const goTo = (path: string) => {
-    router.push(path);
+const goTo = (tab: TabsPaneContext) => {
+    router.push(tab.props.name as string);
 };
 </script>
 
 <template>
   <div class="nav-bar">
-    <div
-        v-for="menu in menuConfig"
-        :key="menu.label"
-        :class="[
-            'nav-bar-item',
-            {active: menu.path === route.path}
-        ]"
-        @click="goTo(menu.path)"
+    <el-tabs
+        v-model="route.path"
+        type="card"
+        :tab-position="tabPostion"
+        @tab-click="goTo"
     >
-        {{ menu.label }}
-    </div>
+        <el-tab-pane
+            v-for="menu in menuConfig"
+            :key="menu.label"
+            :label="menu.label"
+            :name="menu.path"
+        >
+        </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <style lang="less" scoped>
 .nav-bar {
-    min-width: 100px;
-    margin-right: 20px;
-    &-item {
-        width: 150px;
-        height: 40px;
-        border: 1px solid #1C5BFF;
-        border-radius: 4px;
-        text-align: center;
-        line-height: 38px;
-        cursor: pointer;
-        color: #1C5BFF;
-        &:not(:last-child) {
-            margin-bottom: 10px;
-        }
-
-        &:hover,
-        &.active {
-            background-color: #1C5BFF;
-            color: #fff;
-        }
-    }
-}
-@media screen and (max-width: 768px) {
-    .nav-bar {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-bottom: 10px;
-        &-item {
-            &:not(:last-child) {
-                margin-bottom: 0;
-                margin-right: 10px;
-            }
-        }
-    }
+    margin-right: 10px;
 }
 </style>
