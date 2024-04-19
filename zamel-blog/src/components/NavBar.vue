@@ -2,6 +2,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import type { TabsPaneContext } from 'element-plus';
 import { ElTabs, ElTabPane } from 'element-plus';
+const activeTab = ref<string>('/');
 const menuConfig = [
     {
         label: '首页',
@@ -22,12 +23,19 @@ const router = useRouter();
 const goTo = (tab: TabsPaneContext) => {
     router.push(tab.props.name as string);
 };
+
+router.afterEach((to, from) => {
+    activeTab.value = to.path;
+});
+onMounted(() => {
+    activeTab.value = route.path;
+});
 </script>
 
 <template>
   <div class="nav-bar">
     <el-tabs
-        v-model="route.path"
+        v-model="activeTab"
         type="card"
         :tab-position="tabPostion"
         @tab-click="goTo"

@@ -42,3 +42,13 @@ pub fn crop_image(data: &[u8], cols: u32, rows: u32) -> JsValue {
     
     return serde_wasm_bindgen::to_value(&list).unwrap();
 }
+
+
+#[wasm_bindgen(js_name = "cropImageBySize")]
+pub fn crop_image_by_size(data: &[u8], x: u32, y: u32, dw: u32, dh: u32) -> Vec<u8> {
+    let mut img = image::load_from_memory(data).unwrap();
+    
+    let _img = img.crop(x, y, dw, dh);
+    
+    return get_image_bytes(_img);
+}

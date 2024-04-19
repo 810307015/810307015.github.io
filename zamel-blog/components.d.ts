@@ -7,7 +7,15 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CropMulti: typeof import('./src/components/CropMulti.vue')['default']
+    CropSize: typeof import('./src/components/CropSize.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
     ElImage: typeof import('element-plus/es')['ElImage']
+    ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
+    ElSlider: typeof import('element-plus/es')['ElSlider']
+    ElSpace: typeof import('element-plus/es')['ElSpace']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
