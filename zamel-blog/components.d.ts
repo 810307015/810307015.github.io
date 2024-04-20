@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    BigNumberCaculate: typeof import('./src/components/BigNumberCaculate.vue')['default']
     CropMulti: typeof import('./src/components/CropMulti.vue')['default']
     CropSize: typeof import('./src/components/CropSize.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']

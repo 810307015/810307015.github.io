@@ -26,7 +26,7 @@ const changeHandler = (file: UploadFile) => {
     const img = new Image();
     img.src = image.value;
     img.onload = () => {
-        boxWidth.value = Math.min(img.width, 500); // 比500小就用自身的尺寸，不然就用500
+        boxWidth.value = Math.min.call(null, img.width, 500, document.body.clientWidth); // 比500小就用自身的尺寸，不然就用500
         console.log(img.width, img.height);
         ratio.value = boxWidth.value / img.width;
         maxCropWidth.value = img.width * ratio.value;
@@ -80,6 +80,34 @@ const onDragEnd = (e: DragEvent) => {
 const onDragOver = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
+};
+
+const onTouchStart = (e: TouchEvent) => {
+    const { clientX, clientY } = e.touches[0];
+    startX.value = clientX;
+    startY.value = clientY;
+};
+
+const onTouchMove = (e: TouchEvent) => {
+    if (e.touches.length) {
+        const { clientX, clientY } = e.touches[0];
+        const deltaX = clientX - startX.value;
+        const deltaY = clientY - startY.value;
+        if (
+            lastTop.value + deltaY + cropHeight.value <= 500
+            && lastLeft.value + deltaX + cropWidth.value <= 500
+            && lastTop.value + deltaY >= 0
+            && lastLeft.value + deltaX >= 0
+            ) {
+            top.value = lastTop.value + deltaY;
+            left.value = lastLeft.value + deltaX;
+        }
+    }
+};
+
+const onTouchEnd = (e: TouchEvent) => {
+    lastTop.value = top.value;
+    lastLeft.value = left.value;
 };
 
 const crop = () => {
@@ -136,7 +164,7 @@ const crop = () => {
                     width: `${boxWidth.value}px`,
                 }"
                 :src="image"
-                fit="contain"
+                fit="full"
             />
             <div
                 class="crop-box"
@@ -151,6 +179,9 @@ const crop = () => {
                 @drag="onDrag"
                 @dragend="onDragEnd"
                 @dragover="onDragOver"
+                @touchstart="onTouchStart"
+                @touchmove="onTouchMove"
+                @touchend="onTouchEnd"
             >
             </div>
         </div>
@@ -161,7 +192,7 @@ const crop = () => {
                 :style="{
                     width: `${maxCropWidth.value}px`,
                 }"
-                fit="contain"
+                fit="full"
             />
         </div>
     </main>

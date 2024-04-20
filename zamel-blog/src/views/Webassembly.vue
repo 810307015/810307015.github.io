@@ -2,6 +2,7 @@
 import type { TabsPaneContext } from 'element-plus';
 import CropMulti from '@/components/CropMulti.vue';
 import CropSize from '@/components/CropSize.vue';
+import BigNumberCaculate from '@/components/BigNumberCaculate.vue';
 import { ElTabs } from 'element-plus';
 const activeName = ref<string>('crop-multi');
 
@@ -19,6 +20,9 @@ const handleClick = (tab: TabsPaneContext) => {
             </el-tab-pane>
             <el-tab-pane label="自选尺寸裁剪" name="crop-size">
                 <CropSize />
+            </el-tab-pane>
+            <el-tab-pane label="大数计算" name="big-number-caculate">
+                <BigNumberCaculate />
             </el-tab-pane>
         </el-tabs>
     </main>

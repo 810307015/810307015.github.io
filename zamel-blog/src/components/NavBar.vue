@@ -29,6 +29,9 @@ router.afterEach((to, from) => {
 });
 onMounted(() => {
     activeTab.value = route.path;
+    if (navigator.userAgent.includes('Mobile')) {
+        tabPostion.value = 'top';
+    }
 });
 </script>
 
