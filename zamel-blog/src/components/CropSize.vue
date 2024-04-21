@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { UploadFile } from 'element-plus';
-import { cropImageBySize } from '@/assembly/pkg/assembly';
+import { cropImageBySize, cutImage } from '@/assembly/pkg/assembly';
 import { ElLoading } from 'element-plus';
 
 const upload = ref<ElUpload | null>(null);
@@ -27,7 +27,6 @@ const changeHandler = (file: UploadFile) => {
     img.src = image.value;
     img.onload = () => {
         boxWidth.value = Math.min.call(null, img.width, 500, document.body.clientWidth); // 比500小就用自身的尺寸，不然就用500
-        console.log(img.width, img.height);
         ratio.value = boxWidth.value / img.width;
         maxCropWidth.value = img.width * ratio.value;
         maxCropHeight.value = img.height * ratio.value;
@@ -38,17 +37,9 @@ const changeHandler = (file: UploadFile) => {
 };
 
 const reset = () => {
-    imageList.value = [];
+    image.value = '';
+    cropImage.value = '';
     upload.value.clearFiles();
-};
-
-const downloadAll = () => {
-    imageList.value.forEach((image, index) => {
-        const link = document.createElement('a');
-        link.href = image;
-        link.download = `crop-${index + 1}`;
-        link.click();
-    });
 };
 
 const onDragStart = (e: DragEvent) => {
@@ -115,16 +106,32 @@ const crop = () => {
         fullscreen: true,
         text: '裁剪中...'
     });
-    const list: Uni8Array = cropImageBySize(
-        new Uint8Array(imageData.value),
-        Math.floor(left.value / ratio.value),
-        Math.floor(top.value / ratio.value),
-        Math.floor(cropWidth.value / ratio.value),
-        Math.floor(cropHeight.value / ratio.value)
-    );
-    const blob = new Blob([new Uint8Array(list)], { type: 'image/png' });
-    cropImage.value = URL.createObjectURL(blob);
     nextTick(() => {
+        const list: Uni8Array = cropImageBySize(
+            new Uint8Array(imageData.value),
+            Math.floor(left.value / ratio.value),
+            Math.floor(top.value / ratio.value),
+            Math.floor(cropWidth.value / ratio.value),
+            Math.floor(cropHeight.value / ratio.value)
+        );
+        const blob = new Blob([new Uint8Array(list)], { type: 'image/png' });
+        cropImage.value = URL.createObjectURL(blob);
+        loadingInstance.close();
+    });
+};
+
+const cut = () => {
+    const loadingInstance = ElLoading.service({
+        fullscreen: true,
+        text: '裁剪中...'
+    });
+    
+    nextTick(() => {
+        const list: Uni8Array = cutImage(
+            new Uint8Array(imageData.value)
+        );
+        const blob = new Blob([new Uint8Array(list)], { type: 'image/png' });
+        cropImage.value = URL.createObjectURL(blob);
         loadingInstance.close();
     });
 };
@@ -155,6 +162,7 @@ const crop = () => {
             <el-button>上传</el-button>
             <el-button @click.stop="reset">重置</el-button>
             <el-button v-if="image" @click.stop="crop">裁剪</el-button>
+            <el-button v-if="image" @click.stop="cut">边缘</el-button>
         </ElUpload>
         
 
@@ -164,7 +172,7 @@ const crop = () => {
                     width: `${boxWidth.value}px`,
                 }"
                 :src="image"
-                fit="full"
+                fit="fill"
             />
             <div
                 class="crop-box"
@@ -192,7 +200,7 @@ const crop = () => {
                 :style="{
                     width: `${maxCropWidth.value}px`,
                 }"
-                fit="full"
+                fit="fill"
             />
         </div>
     </main>
