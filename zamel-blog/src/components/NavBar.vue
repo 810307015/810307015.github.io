@@ -19,6 +19,10 @@ const menuConfig = [
     {
         label: 'three.js',
         path: '/three',
+    },
+    {
+        label: '浏览器api',
+        path: '/webapi',
     }
 ];
 const tabPostion = ref<string>('left');
