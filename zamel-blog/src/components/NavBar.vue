@@ -15,6 +15,10 @@ const menuConfig = [
     {
         label: 'webassembly',
         path: '/webassembly',
+    },
+    {
+        label: 'three.js',
+        path: '/three',
     }
 ];
 const tabPostion = ref<string>('left');
