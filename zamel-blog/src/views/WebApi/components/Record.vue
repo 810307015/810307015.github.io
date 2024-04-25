@@ -3,10 +3,10 @@ const streamRef = ref<MediaStream | null>(null);
 const mediaRecorder = ref<MediaRecorder | null>(null);
 const chunks = ref<Blob[]>([]);
 const audio = ref<HTMLAudioElement | null>(null);
-const show = ref<boolean>(false);
+const isRecording = ref<boolean>(false);
 
 const startRecord = () => {
-    show.value = false;
+    isRecording.value = true;
     navigator.mediaDevices
         .getUserMedia({ audio: true })
         .then((stream) => {
@@ -21,7 +21,7 @@ const startRecord = () => {
                     const blob = new Blob(chunks.value, { type: "audio/ogg; codecs=opus" });
                     audio.value.src = URL.createObjectURL(blob);
                     audio.value.play();
-                    show.value = true;
+                    isRecording.value = false;
                 } else {
                     ElMessage.error('没有捕获到音频数据');
                 }
@@ -46,12 +46,12 @@ const endRecord = () => {
 </script>
 
 <template>
-    <el-space direction="vertical" size="middle" alignment="flex-start">
-        <el-space size="middle">
-            <el-button @click="startRecord">开始录音</el-button>
-            <el-button @click="endRecord">结束录音</el-button>
+    <el-space direction="vertical" size="large" alignment="flex-start">
+        <el-space size="large">
+            <el-button :disabled="isRecording" @click="startRecord">开始录音</el-button>
+            <el-button :disabled="!isRecording" @click="endRecord">结束录音</el-button>
         </el-space>
-        <el-space size="middle">
+        <el-space size="large">
             <audio ref="audio" controls :disable="show"></audio>
         </el-space>
     </el-space>

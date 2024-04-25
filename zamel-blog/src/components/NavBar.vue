@@ -23,6 +23,10 @@ const menuConfig = [
     {
         label: '浏览器api',
         path: '/webapi',
+    },
+    {
+        label: '深度学习相关',
+        path: '/tensorflow',
     }
 ];
 const tabPostion = ref<string>('left');

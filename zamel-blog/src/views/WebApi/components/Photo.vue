@@ -37,8 +37,8 @@ const endPhoto = () => {
 </script>
 
 <template>
-    <el-space direction="vertical" size="middle" alignment="flex-start">
-        <el-space size="middle">
+    <el-space direction="vertical" size="large" alignment="flex-start">
+        <el-space size="large">
             <el-button @click="startPhoto">开始打开摄像头</el-button>
             <el-button @click="takePhoto">拍照</el-button>
             <el-button @click="endPhoto">关闭摄像头</el-button>
