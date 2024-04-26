@@ -25,6 +25,10 @@ const menuConfig = [
         path: '/webapi',
     },
     {
+        label: '样式相关',
+        path: '/style',
+    },
+    {
         label: '深度学习相关',
         path: '/tensorflow',
     }
