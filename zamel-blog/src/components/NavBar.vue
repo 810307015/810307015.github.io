@@ -29,6 +29,10 @@ const menuConfig = [
         path: '/style',
     },
     {
+        label: '组件相关',
+        path: '/component',
+    },
+    {
         label: '深度学习相关',
         path: '/tensorflow',
     }
