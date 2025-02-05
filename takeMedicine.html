@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Take Medicine</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      padding: 20px; 
+    }
+
+    .item {
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #f6f7fb;
+      margin-bottom: 20px;
+    }
+
+    .subtitle {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 40px;
+    }
+
+    .item-box {
+      font-size: 24px;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .item-box label {
+      margin-right: 20px;
+    }
+
+    .item-box input {
+      width: 24px;
+      height: 24px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="container" class="container">
+    <div class="item">
+      <div class="subtitle">早饭前</div>
+      <div class="item-box">
+        <label>优甲乐</label>
+        <input type="checkbox" name="yjl" />
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="subtitle">早饭后</div>
+      <div class="item-box">
+        <label>叶酸</label>
+        <input type="checkbox" name="folic-acid" />
+      </div>
+      <div class="item-box">
+        <label>铁剂</label>
+        <input type="checkbox" name="iron-supplement-1" />
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="subtitle">中饭后</div>
+      <div class="item-box">
+        <label>DHA</label>
+        <input type="checkbox" name="dha" />
+      </div>
+      <div class="item-box">
+        <label>铁剂</label>
+        <input type="checkbox" name="iron-supplement-2" />
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="subtitle">晚饭后</div>
+      <div class="item-box">
+        <label>铁剂</label>
+        <input type="checkbox" name="iron-supplement-3" />
+      </div>
+
+      <div class="item-box">
+        <label>钙(跟铁隔两个小时)</label>
+        <input type="checkbox" name="calcium" />
+      </div>
+
+      <div id="d2" class="item-box">
+        <label>D2</label>
+        <input type="checkbox" name="d2" />
+      </div>
+    </div>
+  </div>
+  <script>
+    const container = document.querySelector('#container');
+    window.onload = function() {
+      let currentData = localStorage.getItem('currentData');
+      if (currentData) {
+        currentData = JSON.parse(currentData);
+        if (new Date(currentData.date).getDate() === new Date().getDate()) {
+          Object.keys(currentData).forEach(key => {
+            if (document.querySelector(`[name="${key}"]`)) {
+              document.querySelector(`[name="${key}"]`).value = currentData[key];
+              document.querySelector(`[name="${key}"]`).checked = true;
+            }
+          });
+        }
+      }
+
+      const time = new Date().toLocaleTimeString();
+      const delta = new Date() - new Date(`2025-02-04 ${time}`);
+      if (Math.round(delta / (24 * 3600 * 1000)) % 2 === 1) {
+        document.querySelector("#d2").style.display = "none";
+      }
+
+      window.addEventListener('click', e => {
+        if (e.target.tagName === 'INPUT') {
+          let currentData = localStorage.getItem('currentData');
+          currentData = currentData ? JSON.parse(currentData) : {
+            date: +new Date(),
+          };
+          currentData[e.target.name] = 'on';
+          localStorage.setItem('currentData', JSON.stringify(currentData));
+        }
+      });
+    }
+  </script>
+</body>
+</html>
