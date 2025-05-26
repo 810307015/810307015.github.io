@@ -451,7 +451,7 @@ function validSrc(e) {
   return function (e) {
     var t = new URL(e);
     var n = t ? t.host : "";
-    return ["lofty.com", "moatable-order.w.chime.me", "localhost:8091", "127.0.0.1", "127.0.0.1:8081", "localhost", "0.0.0.0"].includes(n);
+    return ["lofty.com", "moatable-order.w.chime.me", "localhost:8091", "810307015.github.io",  "127.0.0.1", "127.0.0.1:8081", "localhost", "0.0.0.0"].includes(n);
     // return "lofty.com" === n || !!n.match(/\.lofty\.(com|me)$/);
   }(e);
 }
