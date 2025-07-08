@@ -64,6 +64,22 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('@/views/Component/index.vue')
+    },
+    {
+      path: '/audio',
+      name: 'audio',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('@/views/Audio/index.vue')
+    },
+    {
+      path: '/canvas',
+      name: 'canvas',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('@/views/Canvas/index.vue')
     }
   ]
 })

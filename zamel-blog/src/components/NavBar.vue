@@ -33,9 +33,17 @@ const menuConfig = [
         path: '/component',
     },
     {
-        label: '深度学习相关',
-        path: '/tensorflow',
-    }
+        label: '音频相关',
+        path: '/audio',
+    },
+    {
+        label: 'canvas相关',
+        path: '/canvas',
+    },
+    // {
+    //     label: '深度学习相关',
+    //     path: '/tensorflow',
+    // }
 ];
 const tabPostion = ref<string>('left');
 const route = useRoute();

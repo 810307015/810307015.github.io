@@ -1,0 +1,18 @@
+{
+  "name": "assembly",
+  "type": "module",
+  "collaborators": [
+    "zhangzhongming <zhangzhongming@baidu.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "assembly_bg.wasm",
+    "assembly.js",
+    "assembly.d.ts"
+  ],
+  "main": "assembly.js",
+  "types": "assembly.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
