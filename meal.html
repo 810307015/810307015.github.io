@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>三餐菜谱展示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 24px 12px 32px 12px;
+            min-height: 100vh;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 18px;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 10;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 16px 0 12px 0;
+            text-align: center;
+            cursor: pointer;
+            font-size: 20px;
+            color: #888;
+            border: none;
+            background: none;
+            outline: none;
+            transition: color 0.2s, border-bottom 0.2s;
+            letter-spacing: 2px;
+        }
+
+        .tab-btn.active {
+            color: #2d8cf0;
+            border-bottom: 3px solid #2d8cf0;
+            font-weight: bold;
+            background: #f0f7ff;
+        }
+
+        .meal-content {
+            display: none;
+        }
+
+        .meal-content.active {
+            display: block;
+        }
+
+        .dish-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .dish-card {
+            background: #fafbfc;
+            border-radius: 10px;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+            padding: 18px 14px 14px 14px;
+            width: 220px;
+            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .dish-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            letter-spacing: 1px;
+        }
+
+        .ingredients {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .copy-tip {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .copy-tip.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 0;
+                box-shadow: none;
+                padding: 8px 2vw 24px 2vw;
+                min-height: 100vh;
+            }
+
+            .tabs {
+                margin: 0 -2vw 12px -2vw;
+                border-radius: 0;
+            }
+
+            .tab-btn {
+                font-size: 18px;
+                padding: 14px 0 10px 0;
+            }
+
+            .dish-list {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .dish-card {
+                width: 100%;
+                padding: 14px 10px 10px 10px;
+                margin-bottom: 0;
+            }
+
+            .dish-title {
+                font-size: 17px;
+            }
+
+            .ingredients {
+                font-size: 15px;
+                padding-left: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="tabs" id="tabs"></div>
+        <div id="meal-contents"></div>
+        <div class="copy-tip" id="copyTip">已复制到剪贴板</div>
+    </div>
+    <script>
+        // 菜谱数据对象
+        const recipesData = {
+            "breakfast": [
+                {
+                    "name": "豆浆",
+                    "ingredients": ["黄豆", "水", "糖", "花生粒", "红枣"]
+                },
+                {
+                    "name": "小米粥（加红枣）",
+                    "ingredients": ["小米", "红枣"]
+                },
+                {
+                    "name": "水煮蛋",
+                    "ingredients": ["鸡蛋"]
+                },
+                {
+                    "name": "蒸南瓜",
+                    "ingredients": ["南瓜"]
+                },
+                {
+                    "name": "白粥",
+                    "ingredients": ["大米"]
+                },
+                {
+                    "name": "凉拌海带丝（少盐）",
+                    "ingredients": ["海带", "葱", "盐"]
+                },
+                {
+                    "name": "冷冻肉包",
+                    "ingredients": ["猪肉（馅）", "面粉（皮）", "葱", "姜"]
+                },
+                {
+                    "name": "南瓜小米糊",
+                    "ingredients": ["南瓜", "小米"]
+                },
+                {
+                    "name": "煮鹌鹑蛋",
+                    "ingredients": ["鹌鹑蛋"]
+                },
+                {
+                    "name": "黄豆核桃豆浆",
+                    "ingredients": ["黄豆", "核桃"]
+                },
+                {
+                    "name": "全麦面包",
+                    "ingredients": ["全麦面粉"]
+                },
+                {
+                    "name": "煎蛋",
+                    "ingredients": ["鸡蛋", "食用油"]
+                },
+                {
+                    "name": "燕麦粥（加葡萄干）",
+                    "ingredients": ["燕麦", "葡萄干"]
+                },
+                {
+                    "name": "冷冻猪肉白菜蒸饺",
+                    "ingredients": ["猪肉（馅）", "白菜（馅）", "面粉（皮）", "葱", "姜"]
+                },
+                {
+                    "name": "银耳莲子粥",
+                    "ingredients": ["银耳", "莲子", "大米"]
+                },
+                {
+                    "name": "牛奶",
+                    "ingredients": ["牛奶"]
+                },
+                {
+                    "name": "香蕉燕麦饼",
+                    "ingredients": ["香蕉", "燕麦", "鸡蛋", "食用油"]
+                },
+                {
+                    "name": "鸡蛋火腿三明治",
+                    "ingredients": ["全麦面包", "鸡蛋", "火腿片", "生菜叶", "番茄片", "少许沙拉酱"]
+                },
+                {
+                    "name": "鸡蛋软饼",
+                    "ingredients": ["鸡蛋", "面粉", "水", "糖"]
+                },
+                {
+                    "name": "蒸玉米",
+                    "ingredients": ["玉米"]
+                },
+                {
+                    "name": "蒸红薯",
+                    "ingredients": ["红薯"]
+                },
+                {
+                    "name": "蒸苹果",
+                    "ingredients": ["苹果"]
+                },
+            ],
+            "lunch": [
+                {
+                    "name": "清蒸鲈鱼",
+                    "ingredients": ["鲈鱼", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "红烧鲈鱼",
+                    "ingredients": ["鲈鱼", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "黄骨鱼炖豆腐",
+                    "ingredients": ["黄骨鱼", "豆腐", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "清炒菠菜",
+                    "ingredients": ["菠菜", "食用油", "盐"]
+                },
+                {
+                    "name": "豆腐鸡蛋汤",
+                    "ingredients": ["豆腐", "鸡蛋", "葱", "盐"]
+                },
+                {
+                    "name": "番茄炖牛腩",
+                    "ingredients": ["番茄", "牛腩", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "土豆炖牛肉",
+                    "ingredients": ["牛腩", "土豆", "胡萝卜", "八角", "姜片", "生抽", "盐"]
+                },
+                {
+                    "name": "宫保鸡丁（少辣）",
+                    "ingredients": ["鸡胸肉", "花生米", "黄瓜丁", "胡萝卜丁", "少许干辣椒", "生抽", "盐"]
+                },
+                {
+                    "name": "青椒炒瘦肉",
+                    "ingredients": ["猪瘦肉", "青椒", "蒜片", "生抽", "淀粉", "盐"]
+                },
+                {
+                    "name": "四季豆炒肉",
+                    "ingredients": ["猪里脊", "四季豆", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "土豆片炒肉",
+                    "ingredients": ["猪里脊", "土豆片", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "莴苣炒肉",
+                    "ingredients": ["猪里脊", "莴苣", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "豆角炒肉",
+                    "ingredients": ["猪里脊", "豆角", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "香菇炒肉",
+                    "ingredients": ["猪里脊", "香菇", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "香干炒肉",
+                    "ingredients": ["猪里脊", "香干", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "红烧小鸡腿（鸡翅）",
+                    "ingredients": ["鸡腿（鸡翅）", "生姜", "生抽", "盐"]
+                },
+                {
+                    "name": "毛豆炒玉米",
+                    "ingredients": ["毛豆", "玉米", "蒜", "生抽", "盐"]
+                },
+                {
+                    "name": "清炒土豆片（丝）",
+                    "ingredients": ["土豆", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "清炒莴苣片（丝）",
+                    "ingredients": ["莴苣", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "炒空心菜",
+                    "ingredients": ["空心菜", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "西红柿炒鸡蛋",
+                    "ingredients": ["西红柿", "鸡蛋", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "清炒藕片（条）",
+                    "ingredients": ["藕片（条）", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "地三鲜",
+                    "ingredients": ["土豆条", "茄子条", "豆角", "蒜片", "生抽", "盐"]
+                },
+                {
+                    "name": "西蓝花炒牛肉",
+                    "ingredients": ["牛肉片", "西蓝花", "蒜末", "蚝油", "盐", "淀粉"]
+                },
+                {
+                    "name": "香菇瘦肉炒油菜",
+                    "ingredients": ["猪瘦肉", "香菇", "油菜", "葱段", "盐", "生抽"]
+                },
+                {
+                    "name": "蒜蓉西兰花",
+                    "ingredients": ["西兰花", "大蒜", "食用油", "盐"]
+                },
+                {
+                    "name": "紫菜蛋花汤",
+                    "ingredients": ["紫菜", "鸡蛋", "葱", "盐"]
+                },
+                {
+                    "name": "丝瓜炒虾仁",
+                    "ingredients": ["丝瓜", "虾仁", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "鸡蛋炒虾仁",
+                    "ingredients": ["鸡蛋", "虾仁", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "清炒油麦菜",
+                    "ingredients": ["油麦菜", "食用油", "盐"]
+                },
+                {
+                    "name": "冬瓜丸子汤",
+                    "ingredients": ["冬瓜", "猪肉馅", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "红烧排骨（少糖）",
+                    "ingredients": ["排骨", "葱", "姜", "酱油", "少量糖", "盐"]
+                },
+                {
+                    "name": "炒茼蒿",
+                    "ingredients": ["茼蒿", "食用油", "盐"]
+                },
+                {
+                    "name": "番茄鸡蛋汤",
+                    "ingredients": ["番茄", "鸡蛋", "葱", "盐"]
+                },
+                {
+                    "name": "菌菇炒鸡片",
+                    "ingredients": ["混合菌菇（香菇、平菇等）", "鸡胸肉", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "焯水西兰花（蘸醋）",
+                    "ingredients": ["西兰花", "醋", "盐"]
+                },
+                {
+                    "name": "萝卜丝汤",
+                    "ingredients": ["萝卜", "葱", "盐"]
+                },
+                {
+                    "name": "青椒炒牛肉丝",
+                    "ingredients": ["青椒", "牛肉", "葱", "盐"]
+                },
+                {
+                    "name": "蒜蓉娃娃菜",
+                    "ingredients": ["娃娃菜", "大蒜", "食用油", "盐"]
+                },
+                {
+                    "name": "紫菜虾皮汤",
+                    "ingredients": ["紫菜", "虾皮", "葱", "盐"]
+                },
+                {
+                    "name": "清蒸排骨",
+                    "ingredients": ["排骨", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "炒上海青",
+                    "ingredients": ["上海青", "食用油", "盐"]
+                },
+                {
+                    "name": "玉米排骨汤（去油）",
+                    "ingredients": ["玉米", "排骨", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "肉末蒸豆腐",
+                    "ingredients": ["猪瘦肉末", "嫩豆腐", "葱花", "生抽", "香油", "盐"]
+                },
+                {
+                    "name": "板栗焖鸡",
+                    "ingredients": ["鸡肉", "板栗", "葱段", "姜片", "生抽", "老抽", "冰糖"]
+                },
+            ],
+            "dinner": [
+                {
+                    "name": "蔬菜鸡蛋面",
+                    "ingredients": ["挂面", "番茄", "青菜", "鸡蛋", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "鸡肉蔬菜面片",
+                    "ingredients": ["面片", "鸡胸肉", "胡萝卜", "青菜", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "蒸山药",
+                    "ingredients": ["山药"]
+                },
+                {
+                    "name": "番茄鸡蛋龙须面",
+                    "ingredients": ["龙须面", "番茄", "鸡蛋", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "凉拌黄瓜木耳",
+                    "ingredients": ["黄瓜", "木耳", "葱", "盐"]
+                },
+                {
+                    "name": "青菜豆腐荞麦面",
+                    "ingredients": ["荞麦面", "青菜", "豆腐", "葱", "盐"]
+                },
+                {
+                    "name": "蒸玉米",
+                    "ingredients": ["玉米"]
+                },
+                {
+                    "name": "杂蔬鸡肉炒面",
+                    "ingredients": ["挂面（切段）", "鸡胸肉（切丝）", "胡萝卜", "包菜", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "豆腐蒸水蛋",
+                    "ingredients": ["豆腐", "鸡蛋", "葱", "盐"]
+                },
+                {
+                    "name": "海鲜菇鸡蛋汤面",
+                    "ingredients": ["鲜面条", "海鲜菇", "鸡蛋", "葱", "盐"]
+                },
+                {
+                    "name": "凉拌菠菜（芝麻酱）",
+                    "ingredients": ["菠菜", "芝麻酱", "盐"]
+                },
+                {
+                    "name": "番茄牛腩烩面",
+                    "ingredients": ["手擀面/挂面", "番茄", "牛腩", "葱", "姜", "盐"]
+                },
+                {
+                    "name": "炒绿豆芽",
+                    "ingredients": ["绿豆芽", "食用油", "盐"]
+                },
+                {
+                    "name": "桂圆枸杞乌鸡汤",
+                    "ingredients": ["乌鸡", "桂圆肉", "枸杞子", "党参", "姜片", "盐"]
+                },
+                {
+                    "name": "黄芪当归炖鸡汤",
+                    "ingredients": ["土鸡", "黄芪", "当归", "红枣", "枸杞", "姜片"]
+                },
+                {
+                    "name": "山药莲子鸭汤",
+                    "ingredients": ["鸭肉", "山药", "莲子", "百合", "红枣", "姜片"]
+                },
+                {
+                    "name": "冬瓜薏米鸭汤",
+                    "ingredients": ["鸭肉", "冬瓜", "薏米", "茯苓", "葱段", "盐"]
+                },
+                {
+                    "name": "萝卜牛腩汤",
+                    "ingredients": ["牛腩", "白萝卜", "香叶", "八角", "姜片", "盐"]
+                },
+                {
+                    "name": "菠菜鸡肉卷",
+                    "ingredients": ["鸡肉丝", "菠菜", "薄饼皮", "鸡蛋", "盐", "香油"]
+                },
+            ]
+        };
+
+        // 复制到剪贴板的函数
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showCopyTip();
+            } catch (err) {
+                // 降级处理，使用传统方法
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showCopyTip();
+            }
+        }
+
+        // 显示复制提示
+        function showCopyTip() {
+            const tip = document.getElementById('copyTip');
+            tip.classList.add('show');
+            setTimeout(() => {
+                tip.classList.remove('show');
+            }, 1500);
+        }
+
+        // 分类标签
+        const mealTypes = [
+            { key: "breakfast", label: "早餐" },
+            { key: "lunch", label: "中餐" },
+            { key: "dinner", label: "晚餐" }
+        ];
+
+        // 渲染tab
+        const tabsEl = document.getElementById('tabs');
+        mealTypes.forEach((meal, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'tab-btn' + (idx === 0 ? ' active' : '');
+            btn.innerText = meal.label;
+            btn.onclick = () => showMeal(meal.key);
+            tabsEl.appendChild(btn);
+        });
+
+        // 渲染内容
+        const mealContentsEl = document.getElementById('meal-contents');
+        mealTypes.forEach((meal, idx) => {
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'meal-content' + (idx === 0 ? ' active' : '');
+            contentDiv.id = meal.key;
+
+            const dishList = document.createElement('div');
+            dishList.className = 'dish-list';
+
+            (recipesData[meal.key] || []).forEach(dish => {
+                const card = document.createElement('div');
+                card.className = 'dish-card';
+
+                // 添加点击事件
+                card.onclick = () => {
+                    const ingredientsText = dish.ingredients.join('、');
+                    const copyText = `${dish.name}[${ingredientsText}]`;
+                    copyToClipboard(copyText);
+                };
+
+                const title = document.createElement('div');
+                title.className = 'dish-title';
+                title.innerText = dish.name;
+
+                const ingList = document.createElement('ul');
+                ingList.className = 'ingredients';
+                dish.ingredients.forEach(ing => {
+                    const li = document.createElement('li');
+                    li.innerText = ing;
+                    ingList.appendChild(li);
+                });
+
+                card.appendChild(title);
+                card.appendChild(ingList);
+                dishList.appendChild(card);
+            });
+
+            contentDiv.appendChild(dishList);
+            mealContentsEl.appendChild(contentDiv);
+        });
+
+        // 切换tab
+        function showMeal(mealKey) {
+            // tab按钮
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', mealTypes[idx].key === mealKey);
+            });
+            // 内容
+            mealTypes.forEach(meal => {
+                document.getElementById(meal.key).classList.toggle('active', meal.key === mealKey);
+            });
+        }
+    </script>
+</body>
+
+</html>
