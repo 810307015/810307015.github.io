@@ -581,12 +581,6 @@
                     copyToClipboard(copyText);
                 };
 
-                card.ontouchend = () => {
-                    const ingredientsText = dish.ingredients.join('、');
-                    const copyText = `${dish.name}[${ingredientsText}]`;
-                    copyToClipboard(copyText);
-                };
-
                 const title = document.createElement('div');
                 title.className = 'dish-title';
                 title.innerText = dish.name;
