@@ -40,6 +40,10 @@ const menuConfig = [
         label: 'canvas相关',
         path: '/canvas',
     },
+    {
+        label: '图片墙',
+        path: '/picture-wall',
+    },
     // {
     //     label: '深度学习相关',
     //     path: '/tensorflow',
@@ -52,7 +56,7 @@ const goTo = (tab: TabsPaneContext) => {
     router.push(tab.props.name as string);
 };
 
-router.afterEach((to, from) => {
+const stopAfterEach = router.afterEach((to) => {
     activeTab.value = to.path;
 });
 onMounted(() => {
@@ -60,6 +64,10 @@ onMounted(() => {
     if (navigator.userAgent.includes('Mobile')) {
         tabPostion.value = 'top';
     }
+});
+
+onBeforeUnmount(() => {
+    stopAfterEach();
 });
 </script>
 

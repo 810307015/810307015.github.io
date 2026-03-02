@@ -73,6 +73,12 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('@/views/Audio/index.vue')
     },
+
+    {
+      path: '/picture-wall',
+      name: 'picture-wall',
+      component: () => import('@/views/PictureWall.vue')
+    },
     {
       path: '/canvas',
       name: 'canvas',
