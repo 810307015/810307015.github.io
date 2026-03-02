@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - main
-      - master
-      - work
+    paths:
+      - 'zamel-blog/**'
+      - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -33,11 +34,20 @@ jobs:
 
       - name: Install dependencies
         working-directory: zamel-blog
-        run: npm ci
+        env:
+          NODE_ENV: development
+        run: npm ci --include=dev
 
       - name: Build site
         working-directory: zamel-blog
-        run: npx vite build --outDir ../dist
+        env:
+          NODE_ENV: development
+        run: npm run build-only -- --outDir ../dist
+
+      - name: Verify build output
+        run: |
+          test -f dist/index.html
+          echo "Build artifact verified: dist/index.html"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
