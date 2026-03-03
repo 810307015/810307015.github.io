@@ -21,6 +21,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: development
+      npm_config_production: 'false'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,12 +37,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: zamel-blog
-        run: npm ci --include=dev --production=false
+        run: npm ci --include=dev --no-audit --no-fund
 
-      - name: Preinstall Vite toolchain
+      - name: Verify local Vite binary
         working-directory: zamel-blog
         run: |
-          npm install --no-save --include=dev vite@^5.2.8 @vitejs/plugin-vue@^5.0.4 @vitejs/plugin-vue-jsx@^3.1.0
           test -x node_modules/.bin/vite
           node_modules/.bin/vite --version
 
