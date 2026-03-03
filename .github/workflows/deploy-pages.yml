@@ -34,16 +34,18 @@ jobs:
 
       - name: Install dependencies
         working-directory: zamel-blog
-        run: npm ci --include=dev || npm install --include=dev
+        run: npm ci --include=dev --production=false
 
-      - name: Ensure Vite exists
+      - name: Preinstall Vite toolchain
         working-directory: zamel-blog
         run: |
-          node -e "require.resolve('vite/package.json')" || npm install --no-save --include=dev vite @vitejs/plugin-vue @vitejs/plugin-vue-jsx
+          npm install --no-save --include=dev vite@^5.2.8 @vitejs/plugin-vue@^5.0.4 @vitejs/plugin-vue-jsx@^3.1.0
+          test -x node_modules/.bin/vite
+          node_modules/.bin/vite --version
 
       - name: Build site
         working-directory: zamel-blog
-        run: npm run build-only -- --outDir ../dist
+        run: node_modules/.bin/vite build --outDir ../dist
 
       - name: Verify build output
         run: |
