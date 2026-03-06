@@ -2,7 +2,8 @@ name: Deploy GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
       - 'zamel-blog/**'
       - '.github/workflows/deploy-pages.yml'
@@ -41,14 +42,9 @@ jobs:
           NPM_CONFIG_OMIT: ''
         run: npm ci --include=dev --no-audit --no-fund
 
-      - name: Check Vite binary
-        run: test -x node_modules/.bin/vite
-
-      - name: Build
-        run: npm exec vite build -- --outDir ../dist
-
-      - name: Verify artifact
-        run: test -f ../dist/index.html
+      - name: Build site
+        working-directory: zamel-blog
+        run: npm run build-only -- --outDir ../dist
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
